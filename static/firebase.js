@@ -120,8 +120,23 @@ async function vote(team) {
       /*
        * ++++ YOUR CODE HERE ++++
        */
-      window.alert(`Not implemented yet!`);
+       const response = await fetch("/", {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/x-www-form-urlencoded",
+           "Authorization": `Bearer ${token}`
+         },
+         body: `team=${encoderURIComponent(team)}`
+       });
 
+       if(response.ok){
+         window.alert('Vote submitted');
+         window.location.reload();
+       }else{
+         const errorText = await response.text();
+         console.error(`Error response: ${errorText}`);
+         window.alert(`Vote not submitted: ${errorText}`);
+       }
     } catch (err) {
       console.log(`Error when submitting vote: ${err}`);
       window.alert('Something went wrong... Please try again!');
